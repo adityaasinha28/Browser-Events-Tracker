@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "Browser - track events",
+  "version": "0.1.3",
+  "description": "Control all tabs and generate Caliper events.",
+  "browser_action": {
+	  "default_icon": {
+      "19": "assets/icon.png",
+      "38": "assets/icon@2x.png"
+    },
+    "default_title": "Browser-Track-Events"
+	},
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "identity",
+    "identity.email",
+    "*://*/*",
+    "http://10.0.31.5:9030/*",
+    "http://10.0.31.5:9030/login/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "exclude_matches":["http://10.0.31.5:9030/*"],
+      "js": ["scripts/vendor/caliperSensor.js","scripts/models/caliper-event-model.js","scripts/content/content.js"],
+      "runAt":"document_start"  
+    },
+    {
+      "matches":["http://10.0.31.5:9030/*"],
+      "js": ["scripts/content/edApp-content.js"]
+    }
+  ],
+  "background": {
+    "persistent": false,
+    "scripts": ["scripts/background/start.js","scripts/background/allTabs.js"]
+  }
+}
